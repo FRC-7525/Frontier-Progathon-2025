@@ -16,10 +16,15 @@ public class Robot extends TimedRobot {
    * This function is run when the robot is first started up and should be used for any
    * initialization code.
    */
-  public Robot() {}
+  Manager manager;
+  public Robot() {
+    manager = new Manager();
+  }
 
   @Override
-  public void robotPeriodic() {}
+  public void robotPeriodic() {
+    manager.periodic();
+  }
 
   @Override
   public void autonomousInit() {}

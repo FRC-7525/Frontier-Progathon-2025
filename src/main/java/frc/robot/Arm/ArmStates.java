@@ -14,6 +14,7 @@ public enum ArmStates{
     Angle targetAngle;
     AngularVelocity targetAngularVelocity; 
     String stateString;
+    ArmStates state;
 
     ArmStates(String stateString, Angle targetAngle, AngularVelocity targetAngularVelocity) {
         this.stateString = stateString;
@@ -30,7 +31,7 @@ public enum ArmStates{
         return stateString;
     }
     public ArmStates getState() {;
-        return this;
+        return state;
     }
     
 }

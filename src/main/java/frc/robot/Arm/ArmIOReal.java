@@ -11,6 +11,7 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.units.measure.AngularVelocity;
 
+import static edu.wpi.first.units.Units.Degrees;
 import static edu.wpi.first.units.Units.RotationsPerSecond;
 import static frc.robot.Arm.ArmConstants.*;
 
@@ -34,7 +35,7 @@ public class ArmIOReal implements ArmIO {
 
     @Override
     public void setAngle(Angle position) {
-        pivotMotor.set(positionController.calculate(pivotMotor.getAbsoluteEncoder().getPosition()));
+        pivotMotor.set(positionController.calculate(pivotMotor.getAbsoluteEncoder().getPosition(), position.in(Degrees)));
         targetAngle = position;
     }
 

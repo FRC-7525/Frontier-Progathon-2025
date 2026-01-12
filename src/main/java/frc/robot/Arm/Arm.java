@@ -7,7 +7,7 @@ public class Arm {
     ArmIO io;
     private static Arm intance;
 
-    private Arm() {
+    public Arm() {
         super();
         this.io = switch (ROBOT_MODE) {
             case REAL -> new ArmIOReal();
@@ -27,7 +27,7 @@ public class Arm {
         return getState();
     }
 
-    protected void runState() {
+    public void periodic() {
         io.setVelocity(getState().getTargetVelocity());
         io.setAngle(getState().getTargetAngle());
         io.logData();

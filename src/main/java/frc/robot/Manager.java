@@ -7,7 +7,7 @@ public class Manager {
     private Arm arm;
     private ManagerStates robotState;
 
-    private XboxController xboxController = new XboxController(0);
+    private XboxController controller = new XboxController(0);
     
     enum ManagerStates {
         IDLE,
@@ -21,7 +21,7 @@ public class Manager {
     public Manager() {
         intake  = new Intake(); 
         shooter = new Shooter();
-        arm = new AmpBar();
+        arm = new Arm();
         drive = new Drive(); 
 
         robotState = ManagerStates.IDLE; 

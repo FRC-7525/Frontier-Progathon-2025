@@ -6,9 +6,11 @@ import static frc.robot.Globalconstants.*;
 public class Arm {
     ArmIO io;
     private static Arm intance;
+    private ArmStates state;
 
     public Arm() {
         super();
+        state = ArmStates.IDLE;
         this.io = switch (ROBOT_MODE) {
             case REAL -> new ArmIOReal();
             case SIM -> new ArmIOSim();
@@ -24,9 +26,13 @@ public class Arm {
     }
 
     public ArmStates getState() {
-        return getState();
+        return state;
     }
 
+    public void setState(ArmStates state) {
+        this.state = state;
+    }
+    
     public void periodic() {
         io.setVelocity(getState().getTargetVelocity());
         io.setAngle(getState().getTargetAngle());

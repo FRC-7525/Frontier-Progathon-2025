@@ -1,9 +1,8 @@
-package frc.robot.subsystems;
+package frc.robot;
 
 import com.ctre.phoenix6.hardware.TalonFX;
 
 import edu.wpi.first.math.controller.PIDController;
-import frc.robot.Constants;
 
 enum ShooterStates {
     IDLE, 

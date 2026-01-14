@@ -1,25 +1,31 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.XboxController;
+import frc.robot.intake.Intake;
+import frc.robot.intake.IntakeStates;
 import frc.robot.Arm.Arm;
+import frc.robot.Arm.ArmStates;
 
 public class Manager {
     private Arm arm;
+    private Shooter shooter;
+    private Intake intake;
     private ManagerStates robotState;
+    private Drive drive;
 
     private XboxController controller = new XboxController(0);
     
     enum ManagerStates {
         IDLE,
-        INTAKE,
+        INTAKING,
         SHOOTING,
-        EEDING,
+        FEEDING,
         SCORING_AMP,
         DRIVE
     }
 
     public Manager() {
-        intake  = new Intake(); 
+        intake = new Intake(); 
         shooter = new Shooter();
         arm = new Arm();
         drive = new Drive(); 
@@ -33,64 +39,46 @@ public class Manager {
         arm.periodic();
         shooter.periodic();
         intake.periodic();
-        drive.periodic(controller.getLeftX().getAsDouble(), controller.getLeftY().getAsDouble(), controller.getRightX().getAsDouble());
+        drive.periodic(controller.getLeftX(), controller.getLeftY(), controller.getRightX());
         
         switch (robotState) {
             case IDLE:
                 shooter.setState(ShooterStates.IDLE);
                 intake.setState(IntakeStates.IDLE);
-                ampBar.setState(AmpStates.IN);
+                arm.setState(ArmStates.IDLE);
 
                 if (controller.getBButtonPressed()) {
-                    robotState = ManagerState.INTAKING; 
+                    robotState = ManagerStates.INTAKING; 
                 }
                 else if (controller.getYButtonPressed()) {
-                    robotState = ManagerState.SHOOTING; 
+                    robotState = ManagerStates.SHOOTING; 
                 }
                 else if (controller.getAButtonPressed()) {
-                    robotState = ManagerState.FEEDING;
+                    robotState = ManagerStates.FEEDING;
                 }
                 break;
             case INTAKING: 
                 intake.setState(IntakeStates.INTAKING);
-                ampBar.setState(AmpStates.IN);
+                arm.setState(ArmStates.IDLE);
                 shooter.setState(ShooterStates.IDLE);
                 if (controller.getBButtonPressed()) {
-                    robotState = ManagerState.IDLE; 
+                    robotState = ManagerStates.IDLE; 
                 }
                 break; 
             case SHOOTING:
                 shooter.setState(ShooterStates.SHOOTING); 
                 intake.setState(IntakeStates.PASSING);
-                ampBar.setState(AmpStates.IN);
+                arm.setState(ArmStates.SHOOTING);
                 if (controller.getYButtonPressed()) {
-                    robotState = ManagerState.IDLE; 
+                    robotState = ManagerStates.IDLE; 
                 }
                 break; 
             case FEEDING:
-                arm.setState(AmpStates.FEEDING);
-                intake.setState(IntakeStates.SLOW);
-                shooter.setState(ShooterStates.SLOW);
+                arm.setState(ArmStates.PASSING);
+                intake.setState(IntakeStates.INTAKING);
+                shooter.setState(ShooterStates.SHOOTING);
                 
-                if (ampBar.hasNote()) {
-                    robotState = ManagerState.HOLDING_NOTE_AMP;
-                }
-            case HOLDING_NOTE_AMP:
-                ampBar.setState(AmpStates.OUT);
-                shooter.setState(ShooterStates.IDLE);
-                intake.setState(IntakeStates.IDLE);
-                
-                if (controller.getAButtonPressed()) {
-                    robotState = ManagerState.SHOOTING_AMP;
-                }
-            case SHOOTING_AMP:
-                shooter.setState(ShooterStates.IDLE);
-                intake.setState(IntakeStates.IDLE);
-                ampBar.setState(AmpStates.SHOOTING);
 
-                if (controller.getAButtonPressed()) {
-                    robotState = ManagerState.IDLE;
-                }
 
             default:
                 break;

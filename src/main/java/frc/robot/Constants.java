@@ -14,6 +14,10 @@ public final class Constants {
         public static final int LEFT_MOTOR_ID = 15;
         public static final int RIGHT_MOTOR_ID = 14;
         public static final double SLOW_RPS = 20;
+        public static final int ROTATE_MOTOR_ID = 25;
+        public static final double SHOOTING_SPEED = 0.5;
+        public static final double LONGSHOOTING_SPEED = 0.7;
+        public static final double LONGSHOOTING_RPS = 100;
     }
      
 
